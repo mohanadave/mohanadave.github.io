@@ -6,11 +6,11 @@ var LANGID=null;
 var TWEET_ID=null;
 if (window.location.href.indexOf('localhost') === -1) {
   // url = 'https://hasoc-annotation-backend.el.r.appspot.com/';
-  url = 'https://shahbhavyan12-oxlf5aqfea-uc.a.run.app/';
+  url = 'https://shahbhavyan12-q3xbfzz3rq-uc.a.run.app/';
   directoryName = 'https://mohanadave.github.io//';
 } else {
   //url = 'http://127.0.0.1:8080/';
-  url = 'https://shahbhavyan12-oxlf5aqfea-uc.a.run.app/'
+  url = 'https://shahbhavyan12-q3xbfzz3rq-uc.a.run.app/';
   // url = 'https://hasoc-annotation-backend.el.r.appspot.com/';
   // url = "https://hasoc-backend-mgyikj6s3q-as.a.run.app/";
   // directoryName = '/annotationplatform.github.io/';
