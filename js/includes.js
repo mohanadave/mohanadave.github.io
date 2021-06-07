@@ -1225,7 +1225,7 @@ function loadSidebarAdmin(elemId, active = null) {
       <div class="sidebar-brand-icon">
         <i class="far fa-newspaper"></i>
       </div>
-      <div class="sidebar-brand-text mx-3">HASOC<sup>2020</sup></div>
+      <div class="sidebar-brand-text mx-3">HASOC<sup>2021</sup></div>
     </a>
 
     <!-- Divider -->
