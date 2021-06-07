@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Dashboard - HASOC</title>
+
+  <!-- Custom fonts for this template-->
+  <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link
+      href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+      rel="stylesheet">
+
+  <!-- Custom styles for this template-->
+  <link href="../css/sb-admin-2.min.css" rel="stylesheet">
+  <link href="../css/bootstrap.css" rel="stylesheet">
+  <link href="../vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+  <link href="https://cdn.datatables.net/select/1.3.1/css/select.dataTables.min.css" rel="stylesheet">
+  <link href="https://cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css" rel="stylesheet">
+
+
+  <script src="../vendor/jquery/jquery.min.js"></script>
+  <!-- Page level plugins -->
+  <script src="../vendor/datatables/jquery.dataTables.min.js"></script>
+  <script src="../vendor/datatables/dataTables.bootstrap4.min.js"></script>
+  <script src="../vendor/bootstrap/js/popper.min.js"></script>
+  <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+
+
+  <!-- Page level custom scripts -->
+  <!--  <script src="js/demo/datatables-demo.js"></script>-->
+
+  <script src="../js/utils.js"></script>
+  <script src="../js/admin_utils.js"></script>
+  <script src="../js/includes.js"></script>
+  <style>
+    .td_pos {
+      position: relative;
+    }
+
+    .btm_left {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+    }
+
+    table.dataTable tbody tr.selected {
+      color: white !important;
+      background-color: #444444 !important;
+    }
+  </style>
+</head>
+
+<body id="page-top">
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+  <!-- Sidebar -->
+  <ul class="navbar-nav bg-dark sidebar sidebar-dark accordion" id="accordionSidebar"></ul>
+  <script>loadSidebarAdmin('accordionSidebar', 'users and tweets')</script>
+  <!-- End of Sidebar -->
+
+  <!-- Content Wrapper -->
+  <div id="content-wrapper" class="vh-100 overflow-auto">
+
+    <!-- Main Content -->
+    <div id="content">
+
+      <!-- Topbar -->
+      <nav class="navbar navbar-expand navbar-light bg-dark topbar mb-4 static-top shadow" id="navbar"></nav>
+      <script>loadNavBar('navbar');</script>
+
+      <!-- End of Topbar -->
+
+      <!-- Begin Page Content -->
+      <!--      <div class="pt-lg-5 mt-5">-->
+      <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <h5>
+          <ol class="breadcrumb shadow" id="page-heading">
+            <li class="breadcrumb-item">
+              <a href="admin_home.html">HASOC</a>
+            </li>
+            <li class="breadcrumb-item active">
+              Manage users and tweets
+            </li>
+          </ol>
+        </h5>
+        <ul class="nav nav-tabs" id="langNav">
+        </ul>
+        <script></script>
+        <div id="langTabContent" class="tab-content">
+        </div>
+        <hr class="bg-secondary">
+        <div class="d-flex">
+          <div class="card shadow mb-4 border-primary">
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold"><i class="fas fa-fw fa-table"></i>&nbsp;Users</h6>
+            </div>
+            <div class="card-body">
+              <table class="table table-bordered w-auto">
+                <tr>
+                  <td>
+                    <button class="btn btn-outline-success" disabled id="addUser" data-toggle="modal"
+                            data-target="#addUserModal"><i class="fas fa-user-plus"></i>&nbsp;Add user
+                    </button>
+                  </td>
+                  <td>
+                    <button class="btn btn-outline-info" disabled id="addMoreTweets" data-toggle="modal"
+                            data-target="#addMoreTweetsModal"><i class="fas fa-chevron-circle-up"></i>&nbsp;Add more
+                      tweets
+                    </button>
+                  </td>
+                  <td>
+                    <button class="btn btn-outline-warning" disabled id="removeTweets" data-toggle="modal"
+                            data-target="#removeTweetsModal"><i class="fas fa-chevron-circle-down"></i>&nbsp;Remove
+                      tweets
+                    </button>
+                  </td>
+                </tr>
+              </table>
+              <div class="table-responsive">
+                <table class="table table-bordered table-hover border-primary" id="userTable" width="100%"
+                       cellspacing="0">
+                  <thead class="table-primary">
+                  <tr>
+                    <th>Username</th>
+                    <th>Total assigned</th>
+                    <th>Total annotated</th>
+                    <th><input class="form-control" type="checkbox" id="checkAll" onclick="checkAll();"></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--        Add more tweets modal-->
+        <div class="modal fade" id="addMoreTweetsModal" tabindex="-1" role="dialog" aria-labelledby="addMoreTweetsLabel"
+             aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="addMoreTweetsLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form id="addMoreTweetsForm" onsubmit="return false;">
+
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--        Remove tweets modal-->
+        <div class="modal fade" id="removeTweetsModal" tabindex="-1" role="dialog" aria-labelledby="removeTweetsLabel"
+             aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="removeTweetsLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form id="removeTweetsForm" onsubmit="return false;">
+
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--        Add user modal-->
+        <div class="modal fade" id="addUserModal" tabindex="0" role="dialog" aria-labelledby="addUserLabel"
+             aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="addUserLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form id="addUserForm" onsubmit="return false;">
+                  <div class="form-group">
+                    <label for="addUserName">Enter Name</label>
+                    <input type="text" class="form-control" name="name" id="addUserName"
+                           placeholder="Eg: John Doe">
+                    <div class="invalid-feedback" id="addUserNameFeedback">
+                      Please enter name.
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="addUserName">Enter Username</label>
+                    <input type="text" class="form-control" name="name" id="addUserUsername"
+                           placeholder="Eg: john@hasoc">
+                    <div class="invalid-feedback" id="addUserUsernameFeedback">
+                      Please enter username.
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="addUserName">Enter initial password</label>
+                    <input type="password" class="form-control" name="name" id="addUserPassword"
+                           placeholder="Eg: john_hasoc">
+                    <div class="invalid-feedback" id="addUserPasswordFeedback">
+                      Please enter password.
+                    </div>
+                  </div>
+                  <label for="addUserLanguages">Select languages:</label>
+                  <div class="form-group" id="addUserLanguages">
+
+                  </div>
+                  <div class="form-group">
+                    <span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right"
+                          title="Add User" id="addUserSubmitSpan">
+                    <button type="submit" class="btn btn-outline-success" onclick="addUserAdmin()" id="addUserSubmit"><i
+                        class="fas fa-user-plus"></i>&nbsp;
+                      Add user
+                    </button>
+                    </span>
+                  </div>
+
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /.container-fluid -->
+      </div>
+      <!--      </div>-->
+    </div>
+    <!-- End of Main Content -->
+
+    <!-- Footer -->
+    <footer class="sticky-footer" id="footer">
+      <script>loadFooter('footer');</script>
+    </footer>
+    <!-- End of Footer -->
+
+  </div>
+  <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" onclick="scrollToTop()">
+  <i class="fas fa-angle-up"></i>
+</a>
+
+<!-- Logout Modal-->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+  <script>loadLogoutModal('logoutModal');</script>
+</div>
+
+<script>
+  checkLogin();
+  fetchUsers();
+  loadLanguageNavTabsAdminManage();
+  $('.progress-bar').tooltip();
+  // Loading content in add more tweets modal
+  $('#addMoreTweetsModal').on('show.bs.modal', function (event) {
+    var table = $('#userTable').DataTable();
+    var indexes = table.rows({selected: true})[0];
+    var rows = table.rows(indexes).data();
+    var usernames = [];
+    var languages = fetchLanguages();
+    var form = $('#addMoreTweetsForm');
+    var content = `
+    <label for="addTweetsUsers">Users</label>
+    <div class="form-group" id="addTweetsUsers">`;
+    for (var i = 0; i < rows.length; i++) {
+      var username = rows[i][0]
+      usernames.push(username);
+      content += `
+      <div class="form-check">
+        <input type="checkbox" class="form-check-input" onclick="checkAtleastOne('addTweets','user', 'Add tweets');" id="addTweetsCheck_${username}" name="addTweets" value="${username}" checked>
+        <label class="form-check-label" for="addTweetsCheck_${username}">
+          ${username}&nbsp;
+        </label>
+        </div>
+
+      `;
+      content += `<label class="form-check-label" for="addTweets_${username}_languages">Languages for ${username}:</label>
+      <div class="form-group" id="addTweets_${username}_languages">
+`;
+      for (var j = 0; j < languages.length; j++) {
+        var langId = languages[j];
+        content += `
+      <div class="form-check pl-4">
+      &nbsp;&nbsp;<input class="form-check-input pl-4" type="checkbox" id="addTweets_${username}_${langId}" name="addTweets_${username}_check_languages" value="${langId}">
+      <label for="addTweets_${username}_${langId}" class="form-check-label">${langId}&nbsp;
+        <div class="spinner-grow spinner-grow-sm text-light" role="status" id="addTweetsLabelLoading_${username}_${langId}">
+            <span class="sr-only">Loading...</span>
+          </div>
+        <div class="text-success" id="addTweetsLabelTick_${username}_${langId}"></div>
+        <div class="text-danger" id="addTweetsLabelCross_${username}_${langId}"></div>
+      </label>
+      </div>
+      `;
+      }
+      content += '</div>';
+
+    }
+    content += '</div></div>';
+    content += `
+    <div class="form-group">
+      <label for="numAddTweets">Enter number of tweets to add for each users:</label>
+      <input type="number" class="form-control" id="numAddTweets" placeholder="Example: 100" required>
+    </div>
+    <span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="Add Tweets" id="addTweetsSubmitSpan">
+    <button type="submit" class="btn btn-outline-success" onclick="addTweetsUser()" id="addTweetsSubmit"><i class="fas fa-chevron-circle-up"></i>&nbsp;
+     Add tweets</button>
+     </span>
+    `;
+    form.html(content);
+    $('#addTweetsSubmitSpan').tooltip();
+    for (var i = 0; i < usernames.length; i++) {
+      var username = usernames[i];
+      for (var j = 0; j < languages.length; j++) {
+        var language = languages[j];
+        $(`#addTweetsLabelLoading_${username}_${language}`).hide();
+        $(`#addTweetsLabelTick_${username}_${language}`).hide();
+        $(`#addTweetsLabelCross_${username}_${language}`).hide();
+      }
+    }
+  });
+
+  // Loading content in remove tweets modal
+  $('#removeTweetsModal').on('show.bs.modal', function (event) {
+    var table = $('#userTable').DataTable();
+    var indexes = table.rows({selected: true})[0];
+    var rows = table.rows(indexes).data();
+    var usernames = []
+    var languages = fetchLanguages();
+    var form = $('#removeTweetsForm');
+    var content = `
+    <label for="removeTweetsUsers">Users</label>
+    <div class="form-group" id="removeTweetsUsers">`;
+    for (var i = 0; i < rows.length; i++) {
+      var username = rows[i][0]
+      usernames.push(username);
+      content += `
+      <div class="form-check">
+        <input type="checkbox" class="form-check-input" onclick="checkAtleastOne('removeTweets','user', 'Remove tweets');" id="removeTweetsCheck_${username}" name="removeTweets" value="${username}" checked>
+        <label class="form-check-label" for="removeTweetsCheck_${username}">
+          ${username}&nbsp;
+        </label>
+        </div>
+
+      `;
+      content += `<label class="form-check-label" for="removeTweets_${username}_languages">Languages for ${username}:</label>
+      <div class="form-group" id="removeTweets_${username}_languages">
+`;
+      for (var j = 0; j < languages.length; j++) {
+        var langId = languages[j];
+        content += `
+      <div class="form-check pl-4">
+      &nbsp;&nbsp;<input class="form-check-input pl-4" type="checkbox" id="removeTweets_${username}_${langId}" name="removeTweets_${username}_check_languages" value="${langId}">
+      <label for="removeTweets_${username}_${langId}" class="form-check-label">${langId}&nbsp;
+        <div class="spinner-grow spinner-grow-sm text-light" role="status" id="removeTweetsLabelLoading_${username}_${langId}">
+            <span class="sr-only">Loading...</span>
+          </div>
+        <div class="text-success" id="removeTweetsLabelTick_${username}_${langId}"></div>
+        <div class="text-danger" id="removeTweetsLabelCross_${username}_${langId}"></div>
+      </label>
+      </div>
+      `;
+      }
+      content += '</div>';
+
+    }
+    content += '</div></div>';
+    content += `
+    <div class="form-group">
+      <label for="numRemoveTweets">Enter number of tweets to add for each users:</label>
+      <input type="number" class="form-control" id="numRemoveTweets" placeholder="Example: 100" required>
+    </div>
+    <span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="Remove Tweets" id="removeTweetsSubmitSpan">
+    <button type="submit" class="btn btn-outline-warning" onclick="removeTweetsUser()" id="removeTweetsSubmit"><i class="fas fa-chevron-circle-down"></i>&nbsp;
+     Remove tweets</button>
+     </span>
+    `;
+    form.html(content);
+    $('#removeTweetsSubmitSpan').tooltip();
+    for (var i = 0; i < usernames.length; i++) {
+      var username = usernames[i];
+      for (var j = 0; j < languages.length; j++) {
+        var language = languages[j];
+        $(`#removeTweetsLabelLoading_${username}_${language}`).hide();
+        $(`#removeTweetsLabelTick_${username}_${language}`).hide();
+        $(`#removeTweetsLabelCross_${username}_${language}`).hide();
+      }
+    }
+  });
+  // $('#removeTweetsModal').on('show.bs.modal', function (event) {
+  //   var table = $('#userTable').DataTable();
+  //   var indexes = table.rows({selected: true})[0];
+  //   var rows = table.rows(indexes).data();
+  //   var usernames = []
+  //   var form = $('#removeTweetsForm');
+  //   var content = `
+  //   <label for="removeTweetsUser">Users</label>
+  //   <div class="form-group" id="removeTweetsUser">`;
+  //   for (var i = 0; i < rows.length; i++) {
+  //     var username = rows[i][0]
+  //     usernames.push(username);
+  //     content += `
+  //     <div class="form-check">
+  //       <input type="checkbox" class="form-check-input" onclick="checkAtleastOne('removeTweets','user', 'Remove tweets');" id="removeTweetsCheck_${username}" name="removeTweets" value="${username}" checked>
+  //       <label class="form-check-label" for="removeTweetsCheck_${username}">
+  //         ${username}&nbsp;
+  //         <div class="spinner-grow spinner-grow-sm text-light" role="status" id="removeTweetsLabelLoading_${username}">
+  //           <span class="sr-only">Loading...</span>
+  //         </div>
+  //         <div class="text-success" id="removeTweetsLabelTick_${username}">
+  //           <i class="far fa-check-circle"></i>
+  //         </div>
+  //         <div class="text-danger" id="removeTweetsLabelCross_${username}">
+  //           <i class="far fa-times-circle"></i>
+  //         </div>
+  //
+  //       </label>
+  //     </div>
+  //     `;
+  //   }
+  //   content += '</div>';
+  //   content += `
+  //   <div class="form-group">
+  //     <label for="numRemoveTweets">Enter number of tweets to remove for each users:</label>
+  //     <input type="number" class="form-control" id="numRemoveTweets" placeholder="Example: 100" required>
+  //   </div>
+  //   <span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="right" title="Remove Tweets" id="removeTweetsSubmitSpan">
+  //   <button type="submit" class="btn btn-outline-warning" onclick="removeTweetsUser()" id="removeTweetsSubmit"><i class="fas fa-chevron-circle-down"></i>&nbsp;
+  //    Remove tweets</button>
+  //    </span>
+  //   `;
+  //   form.html(content);
+  //   $('#removeTweetsSubmitSpan').tooltip();
+  //   for (var i = 0; i < usernames.length; i++) {
+  //     var username = usernames[i];
+  //     $(`#removeTweetsLabelLoading_${username}`).hide();
+  //     $(`#removeTweetsLabelTick_${username}`).hide();
+  //     $(`#removeTweetsLabelCross_${username}`).hide();
+  //   }
+  // });
+
+  // Loading content in add user modal
+  $('#addUserModal').on('show.bs.modal', function (event) {
+    var languages = $('#addUserLanguages');
+    var content = ``;
+    var langs = fetchLanguages();
+    for (var i = 0; i < langs.length; i++) {
+      var lang = langs[i];
+      content += `
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="addUser_${lang}" name="addUser" value="${lang}" onclick="checkAtleastOne('addUser','language', 'Add User');">
+        <label class="form-check-label" for="addUser_${lang}">
+          ${lang}
+        </label>
+      </div>
+      `;
+    }
+    // console.log(content);
+    languages.html(content);
+    $('#addUserSubmitSpan').tooltip();
+    checkAtleastOne('addUser', 'language', 'Add User');
+    $('#addUserNameFeedback').hide();
+    $('#addUserUsernameFeedback').hide();
+    $('#addUserPasswordFeedback').hide();
+  });
+
+  $(".custom-file-input").on("change", function () {
+    var fileName = $(this).val().split("\\").pop();
+    $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+  });
+</script>
+
+
+<!-- Core plugin JavaScript-->
+<script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="../js/sb-admin-2.min.js"></script>
+
+
+</body>
+
+</html>
